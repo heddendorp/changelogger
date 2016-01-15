@@ -1,252 +1,92 @@
-<html lang="en" ng-app="how2">
+<html lang="en" ng-app="StarterApp">
+
 <head>
-    <title>Log-Analysis</title>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-
-    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          rel="stylesheet">
-    <!-- Angular Material style sheet -->
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc7/angular-material.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
-    <style>
-        md-card{
-            background-color: rgba(255,255,255,0.05);
-        }
-        textarea{
-            background-color: rgba(0,0,0,0.05);
-        }
-        .mdl-button--file input {
-            cursor: pointer;
-            height: 100%;
-            right: 0;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            width: 300px;
-            z-index: 4;
-        }
-
-        .mdl-textfield--file .mdl-textfield__input {
-            box-sizing: border-box;
-            width: calc(100% - 32px);
-        }
-        .mdl-textfield--file .mdl-button--file {
-            right: 0;
-        }
-        .crash{
-            color: #EF5350;
-        }
-        .crack{
-            color: #00BCD4;
-        }
-        .logs{
-            font-family: monospace;
-        }
-    </style>
+    <meta name="viewport" content="initial-scale=1" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc1/angular-material.min.css">
 </head>
-<body ng-cloak ng-controller="AppController as vm" layout="column">
-<!--
-  Your HTML content here
--->
+
+<body layout="column" ng-controller="AppController as vm">
 <md-toolbar layout="row">
-    <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-        <h1 style="font-family: 'Lobster', cursive; font-size: larger">Loggify</h1>
+    <div class="md-toolbar-tools">
+        <h1><em>Project</em>&nbsp;<strong>SolderChange</strong></h1>
     </div>
 </md-toolbar>
-<md-content layout="column" flex layout-padding>
-    <div>
-        This project is an early ßeta and not yet for public use!
-        <br><br>
-        <h1>Select a Log-File for analysis</h1>
-       <input type="file" on-read-file="vm.readFile($fileContent)">
+<div layout="row" flex>
+    <div layout="column" flex id="content">
+        <md-content layout="column" flex class="md-padding">
+            <p>
+                This project is an early beta and not yet for public use!<br>
+                To use it please paste the solder api url of a pack down below.
+            </p>
+            <md-input-container>
+                <label>URL</label>
+                <input type="text" ng-model="vm.url" ng-change="vm.updatePack()">
+            </md-input-container>
+            <div ng-if="vm.data && vm.url">
+
+                <p class="md-headline">You selected <strong>{{vm.data.display_name}}</strong></p>
+                <div layout="row" layout-align="start center">
+                    <span>show changes between</span>
+                    <md-input-container>
+                        <label>Build 1</label>
+                        <md-select ng-model="vm.build1" ng-change="vm.update()">
+                            <md-option ng-repeat="build in vm.data.builds">
+                                {{build}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <span>&nbsp;and&nbsp;</span>
+                    <md-input-container>
+                        <label>Build 2</label>
+                        <md-select ng-model="vm.build2" ng-change="vm.update()">
+                            <md-option ng-repeat="build in vm.data.builds">
+                                {{build}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <div style="width: 10%;"></div>
+                    <md-button ng-show="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]" data-clipboard-target="#data" class="md-raised" id="copy">Copy to clipboard</md-button>
+                </div>
+
+                <div flex layout="column">
+                    <div ng-show="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">
+                        <p>Changes</p>
+                    </div>
+                    <div flex id="data">
+                        <p ng-if="vm.changes.adds[0]">
+                            Additions <br>
+                            <span  ng-repeat="add in vm.changes.adds">
+                                *{{add}}<br>
+                            </span>
+                        </p>
+                        <p ng-if="vm.changes.updates[0]">
+                            Updates <br>
+                            <span  ng-repeat="update in vm.changes.updates">
+                                *{{update}}<br>
+                            </span>
+                        </p>
+                        <p ng-if="vm.changes.removes[0]">
+                            Deletions <br>
+                            <span  ng-repeat="remove in vm.changes.removes">
+                                *{{remove}}<br>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </md-content>
     </div>
-    <div layout="column" ng-if="vm.loaded">
-        <md-card>
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">System Info</span>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-content style="padding-top: 16px;" layout-wrap layout="column">
-                <p>Launcher Build: {{vm.launcherBuild}} <br>
-                MC-Runs detected: {{vm.launches}} <br>
-                RAM: {{vm.ram}} <br>
-                Modpack: {{vm.pack}} <br>
-                Java: {{vm.jre}} <br>
-                Operating System: {{vm.os}}</p>
-                <span ng-if="vm.javaError">Possible Java-Error: <br><span class="logs">{{vm.javaError[0]}}<br>{{vm.javaError[1]}}</span></span>
-                <span ng-if="vm.falseJava">Program Files (x86) detected!</span>
-                <span ng-if="vm.crack">Possible cracked launcher!</span>
-                <span ng-if="vm.cause">Attention: <span class="logs">{{vm.cause}}</span></span>
-            </md-card-content>
-        </md-card>
-        <md-card>
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">Latest launch</span>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-content style="padding-top: 16px;" layout-wrap layout="column" class="logs">
+</div>
+<a href="https://github.com/Isigiel/changelogger" class="github-corner"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#ffffff; color:rgb(63, 81, 181); position: absolute; top: 0; border: 0; right: 0; z-index: 3;"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<!-- Angular Material Dependencies -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-aria.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.5/clipboard.min.js"></script>
 
-                    <span ng-repeat="line in vm.latest track by $index" ng-class="{ crash:line.mark==1, crack:line.mark==2}">{{line.text}}</span>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc1/angular-material.min.js"></script>
+<script src="js/app.js"></script>
 
-            </md-card-content>
-        </md-card>
-    </div>
-    </div>
-</md-content>
-
-
-<a href="https://github.com/Isigiel/changelogger" class="github-corner"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#fff; color:rgba(103, 58, 183, 1); position: absolute; top: 0; border: 0; right: 0; z-index: 3;"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-<!-- Angular Material requires Angular.js Libraries -->
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.0/lodash.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-<!-- Angular Material Library -->
-<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc7/angular-material.min.js"></script>
-
-
-<script>
-    var app = angular.module('how2', ['ngMaterial']);
-
-    app.config(
-            function($mdThemingProvider) {
-                $mdThemingProvider.theme('default')
-                        .primaryPalette('deep-purple')
-                        .accentPalette('cyan')
-                        .dark();
-            }
-    );
-
-    app.controller('AppController', function() {
-        var vm = this;
-        vm.loaded = false;
-        vm.readFile = readFile;
-        vm.file = {
-            index: [],
-            content: []
-        };
-
-
-        function readFile (target) {
-            var file = angular.copy(target.result);
-            var lines;
-            lines = _.split(file, /\n/);
-            var launcherline = lines[lines.length-2];
-            vm.launcherBuild = launcherline.substr(launcherline.indexOf('[')+2, launcherline.indexOf(']')-2);
-            var sortedLines = {
-                0: []
-            };
-            var launch = 0;
-            var crashFlag = false;
-            var causeFlag = false;
-            var javaFlag = false;
-            lines.forEach(function (line) {
-                var saveLine = {
-                    text: line
-                };
-               if(line.indexOf('Forge Mod Loader version')!= -1 && line.indexOf('loading')!= -1){
-                   launch++;
-                   sortedLines[launch] = [];
-               }
-                sortedLines[launch].push(saveLine);
-            });
-            sortedLines[launch].forEach(function (lineObject) {
-                var line = lineObject.text;
-                if(javaFlag){
-                    lineObject.mark = 1;
-                    javaFlag = false;
-                    vm.javaError[1] = line;
-                }
-                if(line.indexOf('OS:')!= -1){
-                    vm.os = line.substr(line.indexOf('OS:')+4);
-                }
-                if(line.indexOf('Xmx')!= -1){
-                    vm.ram = line.substr(line.indexOf('Xmx')+3,5);
-                }
-                if(line.indexOf('modpacks')!= -1){
-                    var packPath = line.substr(line.indexOf('modpacks')+9);
-                    console.log(packPath);
-                    vm.pack = packPath.substr(0, packPath.indexOf('\\'));
-                }
-                if(line.indexOf('jre')!= -1){
-                    var jrePath = line.substr(line.indexOf('jre'));
-                    vm.jre = jrePath.substr(0, jrePath.indexOf('\\'));
-                }
-                if(line.indexOf('---- Minecraft Crash Report ----')!= -1){
-                    crashFlag = true;
-                }
-                if(line.indexOf('Error occurred')!= -1){
-                    lineObject.mark = 1;
-                    javaFlag = true;
-                    vm.javaError = [];
-                    vm.javaError[0] = line;
-                }
-                if(line.indexOf('[java.lang.Throwable$WrappedPrintStream:println:-1]: java.lang.NoSuchMethodError: com.google.common.io.CharSource.readLines(Lcom/google/common/io/LineProcessor;)Ljava/lang/Object;')!= -1){
-                    vm.crack = true;
-                    lineObject.mark = 2;
-                }
-                if(line.indexOf('Caused by:')!= -1){
-                    causeFlag = true;
-                    lineObject.mark = 1;
-                    vm.cause = line;
-                }
-                if(line.indexOf('Program Files (x86)')!= -1){
-                    vm.falseJava = true;
-                }
-                if(line.indexOf('...')!= -1){
-                    causeFlag = false;
-                }
-                if(line.indexOf('at')!= -1 && causeFlag){
-                    lineObject.mark = 1;
-                }
-                if(line.indexOf('[STDOUT]')!= -1 && crashFlag){
-                    lineObject.mark = 1;
-                }
-            });
-            vm.fileName = target.file.name;
-            console.log(lines);
-            console.log(vm.launcherBuild);
-            console.log(sortedLines);
-            vm.launches = launch;
-            vm.latest = sortedLines[launch];
-            vm.loaded = true;
-        }
-    });
-
-    app.directive('onReadFile', function ($parse) {
-        return {
-            restrict: 'A',
-            scope: false,
-            link: function(scope, element, attrs) {
-                var fn = $parse(attrs.onReadFile);
-
-                element.on('change', function(onChangeEvent) {
-                    var reader = new FileReader();
-
-                    reader.onload = function(onLoadEvent) {
-                        scope.$apply(function() {
-                            fn(scope, {$fileContent:onLoadEvent.target});
-                        });
-                    };
-
-                    reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
-                    reader.file=(onChangeEvent.srcElement || onChangeEvent.target).files[0];
-                });
-            }
-        };
-    });
-</script>
 </body>
 
 </html>
