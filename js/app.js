@@ -1,7 +1,7 @@
 new Clipboard('#copy');
-var app = angular.module('StarterApp', ['ngMaterial']);
+var app = angular.module('StarterApp', ['ngMaterial', 'angulartics', 'angulartics.google.analytics']);
 
-app.controller('AppController', function($http, $mdToast, $log) {
+app.controller('AppController', function($http, $mdToast, $log, $analytics) {
     var vm = this;
     var request = false;
     vm.build1 = '';
@@ -37,7 +37,8 @@ app.controller('AppController', function($http, $mdToast, $log) {
             if(request)
                 vm.changes = generate(build1, build2);
             request = true;
-        })
+        });
+        $analytics.eventTrack(vm.build1+' - '+vm.build2, {  category: 'Changelog display', label: vm.data.display_name });
     };
 
     function generate (b1, b2){
