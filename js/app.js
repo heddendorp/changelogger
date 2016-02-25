@@ -13,7 +13,8 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
       $log.info('Platform api loaded');
       $log.info(res.data);
       if( res.data.solder != null){
-        $http.get(proxy+res.data.solder+'modpack/'+res.data.name).then(function (res) {
+        vm.solder = res.data.solder+'modpack/'+res.data.name;
+        $http.get(proxy+vm.solder).then(function (res) {
           $log.info('Solder api loaded');
           $log.info(res.data);
           vm.data = res.data;
@@ -37,14 +38,14 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
       return;
     }
     var build1, build2;
-    $http.get('http://bochen415.info/loggify.php?url='+vm.url+'/'+vm.build1.replace(/ /g,'')+'?include=mods').then(function (res) {
+    $http.get('http://bochen415.info/loggify.php?url='+vm.solder+'/'+vm.build1.replace(/ /g,'')+'?include=mods').then(function (res) {
       build1 = res.data;
       $log.info(build1);
       if(request)
         vm.changes = generate(build1, build2);
       request = true;
     });
-    $http.get('http://bochen415.info/loggify.php?url='+vm.url+'/'+vm.build2.replace(/ /g,'')+'?include=mods').then(function (res) {
+    $http.get('http://bochen415.info/loggify.php?url='+vm.solder+'/'+vm.build2.replace(/ /g,'')+'?include=mods').then(function (res) {
       build2 = res.data;
       $log.info(build2);
       if(request)
