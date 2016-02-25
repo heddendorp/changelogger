@@ -30,6 +30,7 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
           $mdToast.showSimple('Not able to load pack from solder');
         })
       } else {
+        vm.progress = 0;
         $mdToast.showSimple('Pack isn\'t solder enabled');
       }
     }, function (err) {
