@@ -17,11 +17,12 @@
         <md-content layout="column" flex class="md-padding">
             <p>
                 This project is an early beta and not yet for public use!<br>
-                To use it please paste the solder api url of a pack down below.
+                To use, paste the <em>Platform API</em> link of your pack below <br>
+                <strong>This only works with solder enabled packs</strong>
             </p>
             <md-input-container>
-                <label>URL</label>
-                <input type="text" ng-model="vm.url" ng-change="vm.updatePack()">
+                <label>Pltaform-api-URL</label>
+                <input type="text" ng-model="vm.url" ng-change="vm.updateUrl()">
             </md-input-container>
             <div ng-if="vm.data && vm.url">
 
