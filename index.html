@@ -12,6 +12,7 @@
         <h1><em>Project</em>&nbsp;<strong>SolderChange</strong></h1>
     </div>
 </md-toolbar>
+<md-progress-linear class="md-accent" md-mode="determinate" value="{{vm.progress}}"></md-progress-linear>
 <div layout="row" flex>
     <div layout="column" flex id="content">
         <md-content layout="column" flex class="md-padding">
@@ -25,7 +26,6 @@
                 <input type="text" ng-model="vm.url" ng-change="vm.updateUrl()">
             </md-input-container>
             <div ng-if="vm.data && vm.url">
-
                 <p class="md-headline">You selected <strong>{{vm.data.display_name}}</strong></p>
                 <div layout="row" layout-align="start center">
                     <span>show changes between</span>
@@ -49,7 +49,6 @@
                     <div style="width: 10%;"></div>
                     <md-button ng-show="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]" data-clipboard-target="#data" class="md-raised" id="copy">Copy to clipboard</md-button>
                 </div>
-
                 <div flex layout="column">
                     <div ng-show="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">
                         <p>Changes</p>

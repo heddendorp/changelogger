@@ -8,19 +8,24 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
   vm.build1 = '';
   vm.build2 = '';
   vm.selection = {};
+  vm.progress = 0;
   vm.updateUrl = function () {
+    vm.progress = 0;
     $http.get(proxy+vm.url+'?build=99').then(function (res) {
+      vm.progress = 50;
       $log.info('Platform api loaded');
       $log.info(res.data);
       if( res.data.solder != null){
         vm.solder = res.data.solder+'modpack/'+res.data.name;
         $http.get(proxy+vm.solder).then(function (res) {
+          vm.progress = 100;
           $log.info('Solder api loaded');
           $log.info(res.data);
           vm.data = res.data;
           vm.data.builds.reverse();
           $mdToast.showSimple('Pack data loaded');
         }, function (err) {
+          vm.progress = 0;
           $log.error(err);
           $mdToast.showSimple('Not able to load pack from solder');
         })
@@ -28,6 +33,7 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
         $mdToast.showSimple('Pack isn\'t solder enabled');
       }
     }, function (err) {
+      vm.progress = 0;
       $log.warn(err);
       $mdToast.showSimple('Platform link invalid');
     })
@@ -37,25 +43,25 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
     if (!vm.build1 || !vm.build2){
       return;
     }
+    vm.progress = 0;
+    $log.info('Loading builds '+vm.build1.replace(/ /g,'')+' & '+vm.build2.replace(/ /g,''));
     var build1, build2;
     $http.get('http://bochen415.info/loggify.php?url='+vm.solder+'/'+vm.build1.replace(/ /g,'')+'?include=mods').then(function (res) {
+      vm.progress = 50;
       build1 = res.data;
-      $log.info(build1);
-      if(request)
+      $http.get('http://bochen415.info/loggify.php?url='+vm.solder+'/'+vm.build2.replace(/ /g,'')+'?include=mods').then(function (res) {
+        vm.progress = 100;
+        build2 = res.data;
+        $log.info('Build 2 loaded, request is '+request);
+        $log.info(build2);
         vm.changes = generate(build1, build2);
-      request = true;
-    });
-    $http.get('http://bochen415.info/loggify.php?url='+vm.solder+'/'+vm.build2.replace(/ /g,'')+'?include=mods').then(function (res) {
-      build2 = res.data;
-      $log.info(build2);
-      if(request)
-        vm.changes = generate(build1, build2);
-      request = true;
+      });
     });
     $analytics.eventTrack(vm.build1+' - '+vm.build2 + ' ('+vm.data.name+')', {  category: 'Changelog display', label: vm.data.display_name });
   };
 
   function generate (b1, b2){
+    $log.info('Generate changelog');
     var changes = {
       adds: [],
       updates: [],
