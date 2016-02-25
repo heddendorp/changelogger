@@ -47,10 +47,10 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
     vm.progress = 0;
     $log.info('Loading builds '+vm.build1.replace(/ /g,'')+' & '+vm.build2.replace(/ /g,''));
     var build1, build2;
-    $http.get('http://bochen415.info/loggify.php?url='+vm.solder+'/'+vm.build1.replace(/ /g,'')+'?include=mods').then(function (res) {
+    $http.get(proxy+vm.solder+'/'+vm.build1.replace(/ /g,'')+'?include=mods').then(function (res) {
       vm.progress = 50;
       build1 = res.data;
-      $http.get('http://bochen415.info/loggify.php?url='+vm.solder+'/'+vm.build2.replace(/ /g,'')+'?include=mods').then(function (res) {
+      $http.get(proxy+vm.solder+'/'+vm.build2.replace(/ /g,'')+'?include=mods').then(function (res) {
         vm.progress = 100;
         build2 = res.data;
         $log.info('Build 2 loaded, request is '+request);
