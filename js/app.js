@@ -38,7 +38,7 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
                 vm.changes = generate(build1, build2);
             request = true;
         });
-        $analytics.eventTrack(vm.build1+' - '+vm.build2+'  of '+vm.data.display_name, {  category: 'Changelog display'});
+        $analytics.eventTrack(vm.build1+' - '+vm.build2 + ' ('+vm.data.name+')', {  category: 'Changelog display', label: vm.data.display_name });
     };
 
     function generate (b1, b2){
