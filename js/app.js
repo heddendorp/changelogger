@@ -19,6 +19,8 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
         vm.solder = res.data.solder+'modpack/'+res.data.name;
         $http.get(proxy+vm.solder).then(function (res) {
           vm.progress = 100;
+          vm.build1 = '';
+          vm.build2 = '';
           $log.info('Solder api loaded');
           $log.info(res.data);
           vm.data = res.data;
