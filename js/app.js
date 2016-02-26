@@ -23,19 +23,23 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
           $log.info(res.data);
           vm.data = res.data;
           vm.data.builds.reverse();
+          $analytics.eventTrack('loaded: '+res.data.name, {  category: 'Pack loaded', label: res.data.display_name });
           $mdToast.showSimple('Pack data loaded');
         }, function (err) {
           vm.progress = 0;
           $log.error(err);
+          $analytics.eventTrack(vm.url, {  category: 'Changelog error', label: 'Solder api problem' });
           $mdToast.showSimple('Not able to load pack from solder');
         })
       } else {
         vm.progress = 0;
+        $analytics.eventTrack(res.data.name, {  category: 'Changelog error', label: 'Non solder pack entered' });
         $mdToast.showSimple('Pack isn\'t solder enabled');
       }
     }, function (err) {
       vm.progress = 0;
       $log.warn(err);
+      $analytics.eventTrack(vm.url, {  category: 'Changelog error', label: 'Invalid platform link' });
       $mdToast.showSimple('Platform link invalid');
     })
   };
