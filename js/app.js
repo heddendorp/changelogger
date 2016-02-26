@@ -46,6 +46,9 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
 
   vm.update = function () {
     if (vm.build1=='' || vm.build2==''){
+      if(vm.build2==''){
+        vm.build2 = vm.build1;
+      }
       return;
     }
     if(compareVersion (vm.build1, vm.build2) > 0){
