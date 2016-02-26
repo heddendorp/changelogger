@@ -22,9 +22,6 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
           $log.info('Solder api loaded');
           $log.info(res.data);
           vm.data = res.data;
-          vm.data.builds = vm.data.builds.map(function (build) {
-            return build.replace(/([a-z])|([A-Z])/g, '');
-          });
           vm.data.builds.sort(compareVersion).reverse();
           $analytics.eventTrack('loaded: '+res.data.name, {  category: 'Pack loaded', label: res.data.display_name });
           $mdToast.showSimple('Pack data loaded');
