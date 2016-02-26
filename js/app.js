@@ -9,6 +9,14 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
   vm.build2 = '';
   vm.selection = {};
   vm.progress = 0;
+  vm.update1 = function (build) {
+    vm.build1= build;
+    vm.update()
+  };
+  vm.update2 = function (build) {
+    vm.build2 = build;
+    vm.update();
+  };
   vm.updateUrl = function () {
     vm.progress = 0;
     $http.get(proxy+vm.url+'?build=99').then(function (res) {

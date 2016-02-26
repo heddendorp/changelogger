@@ -3,7 +3,12 @@
 <head>
     <title>Changelogger</title>
     <meta name="viewport" content="initial-scale=1" />
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc1/angular-material.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.css">
+    <style>
+        .selected{
+            background-color: lightgrey;
+        }
+    </style>
 </head>
 
 <body layout="column" ng-controller="AppController as vm">
@@ -25,53 +30,55 @@
                 <label>Pltaform-api-URL</label>
                 <input type="text" ng-model="vm.url" ng-change="vm.updateUrl()">
             </md-input-container>
+            <br><br>
             <div ng-if="vm.data && vm.url">
                 <p class="md-headline">You selected <strong>{{vm.data.display_name}}</strong></p>
-                <div layout="row" layout-align="start center">
-                    <span>show changes between</span>
-                    <md-input-container>
-                        <label>Build 1</label>
-                        <md-select ng-model="vm.build1" ng-change="vm.update()">
-                            <md-option ng-repeat="build in vm.data.builds">
-                                {{build}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <span>&nbsp;and&nbsp;</span>
-                    <md-input-container>
-                        <label>Build 2</label>
-                        <md-select ng-model="vm.build2" ng-change="vm.update()">
-                            <md-option ng-repeat="build in vm.data.builds">
-                                {{build}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <div style="width: 10%;"></div>
-                    <md-button ng-show="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]" data-clipboard-target="#data" class="md-raised" id="copy">Copy to clipboard</md-button>
-                </div>
-                <div flex layout="column">
-                    <div ng-show="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">
-                        <p>Changes</p>
+                <div layout="row">
+                    <div layout="column">
+                        <p>Select build 1</p>
+                        <md-list>
+                            <md-list-item ng-class="{selected: vm.build1 == build}" ng-repeat="build in vm.data.builds" ng-click="vm.update1(build)">{{build}}</md-list-item>
+                        </md-list>
                     </div>
-                    <div flex id="data">
-                        <p ng-if="vm.changes.adds[0]">
-                            Additions <br>
+                    <div flex="5"></div>
+                    <div layout="column">
+                        <p>select build 2</p>
+                        <md-list>
+                            <md-list-item ng-class="{selected: vm.build2 == build}" ng-repeat="build in vm.data.builds" ng-click="vm.update2(build)">{{build}}</md-list-item>
+                        </md-list>
+                    </div>
+                    <div flex="10"></div>
+                    <div>
+                        <md-card ng-show="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline">Changes from {{vm.build1}} to {{vm.build2}}</span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content id="data" layout="row" style="margin-top: 20px;" layout-margin>
+                                <p ng-if="vm.changes.adds[0]">
+                                    Additions <br><br>
                             <span  ng-repeat="add in vm.changes.adds">
-                                *{{add}}<br>
+                                * {{add}}<br>
                             </span>
-                        </p>
-                        <p ng-if="vm.changes.updates[0]">
-                            Updates <br>
+                                </p>
+                                <p ng-if="vm.changes.updates[0]">
+                                    Updates <br><br>
                             <span  ng-repeat="update in vm.changes.updates">
-                                *{{update}}<br>
+                                * {{update}}<br>
                             </span>
-                        </p>
-                        <p ng-if="vm.changes.removes[0]">
-                            Deletions <br>
+                                </p>
+                                <p ng-if="vm.changes.removes[0]">
+                                    Deletions <br><br>
                             <span  ng-repeat="remove in vm.changes.removes">
-                                *{{remove}}<br>
+                                * {{remove}}<br>
                             </span>
-                        </p>
+                                </p>
+                            </md-card-content>
+                            <md-card-actions layout="row" layout-align="end center">
+                                <md-button data-clipboard-target="#data" class="md-raised md-accent" id="copy">Copy to clipboard</md-button>
+                            </md-card-actions>
+                        </md-card>
                     </div>
                 </div>
             </div>
@@ -93,7 +100,7 @@
     ga('create', 'UA-66228786-2', 'auto');
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc1/angular-material.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/angulartics.min.js"></script>
 <script src="js/angulartics-ga.min.js"></script>
