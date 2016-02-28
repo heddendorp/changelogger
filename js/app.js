@@ -10,10 +10,6 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
   vm.build2 = '';
   vm.selection = {};
   vm.progress = 0;
-  if(attrs.url){
-    vm.url = attrs.url;
-    vm.updateUrl();
-  }
   vm.update1 = function (build) {
     vm.build1= build;
     vm.update()
@@ -92,6 +88,11 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
     });
     $analytics.eventTrack(vm.build1+' - '+vm.build2 + ' ('+vm.data.name+')', {  category: 'Changelog display', label: vm.data.display_name });
   };
+  if(attrs.url){
+    vm.url = attrs.url;
+    vm.updateUrl();
+  }
+
 
   function generate (b1, b2){
     $log.info('Generate changelog');
