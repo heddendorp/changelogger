@@ -1,14 +1,19 @@
 new Clipboard('#copy');
 var app = angular.module('StarterApp', ['ngMaterial', 'angulartics', 'angulartics.google.analytics']);
 
-app.controller('AppController', function($http, $mdToast, $log, $analytics) {
+app.controller('AppController', function($http, $mdToast, $log, $analytics, $location) {
   var vm = this;
   var request = false;
   var proxy = 'http://bochen415.info/loggify.php?url=';
+  var attrs = $location.search();
   vm.build1 = '';
   vm.build2 = '';
   vm.selection = {};
   vm.progress = 0;
+  if(attrs.url){
+    vm.url = attrs.url;
+    vm.updateUrl();
+  }
   vm.update1 = function (build) {
     vm.build1= build;
     vm.update()
@@ -35,6 +40,11 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics) {
           vm.data.builds.sort(compareVersion).reverse();
           $analytics.eventTrack('loaded: '+res.data.name, {  category: 'Pack loaded', label: res.data.display_name });
           $mdToast.showSimple('Pack data loaded');
+          if(attrs.from && attrs.to){
+            vm.build1 = attrs.from;
+            vm.build2 = attrs.to;
+            vm.update();
+          }
         }, function (err) {
           vm.progress = 0;
           $log.error(err);
