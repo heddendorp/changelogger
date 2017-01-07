@@ -8,7 +8,24 @@
     <link rel="stylesheet" href="style/animate.css">
     <style>[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
-    }</style>
+    }
+    md-content {
+        background: url(https://subtlepatterns.com/patterns/stardust.png); }
+
+    body {
+        background: url(https://subtlepatterns.com/patterns/stardust.png); }
+
+    .selected {
+        background-color: rgba(255, 255, 255, 0.2); }
+
+    .share {
+        font-family: monospace; }
+
+    md-card.ng-enter {
+        animation: fadeInRight .5s; }
+
+    md-card.ng-leave {
+        animation: fadeOutRight .5s; }</style>
 </head>
 
 <body layout="column" ng-controller="AppController as vm">
