@@ -9,23 +9,7 @@
     <style>[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
     }
-    md-content {
-        background: url(https://subtlepatterns.com/patterns/stardust.png); }
-
-    body {
-        background: url(https://subtlepatterns.com/patterns/stardust.png); }
-
-    .selected {
-        background-color: rgba(255, 255, 255, 0.2); }
-
-    .share {
-        font-family: monospace; }
-
-    md-card.ng-enter {
-        animation: fadeInRight .5s; }
-
-    md-card.ng-leave {
-        animation: fadeOutRight .5s; }</style>
+    </style>
 </head>
 
 <body layout="column" ng-controller="AppController as vm">
@@ -72,7 +56,9 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <p class="md-body-1 share">http://isigiel.github.io/changelogger<span ng-if="vm.data && vm.url">#!?url={{vm.url}}<span ng-if="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">&from={{vm.build1}}&to={{vm.build2}}</span></span></p>
+                <p class="md-body-1 share">http://isigiel.github.io/changelogger<span ng-if="vm.data && vm.url">#!?url={{vm.url}}<span
+                        ng-if="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">&from={{vm.build1}}&to={{vm.build2}}</span></span>
+                </p>
             </md-card-content>
         </md-card>
         <md-card md-whiteframe="3">
