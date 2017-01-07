@@ -54,6 +54,7 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
                     if(prod)
                         $analytics.eventTrack('loaded: '+res.data.name, {  category: 'Pack loaded', label: res.data.display_name });
                     $mdToast.showSimple('Pack data loaded');
+                    $location.search('url', vm.url);
                     if(attrs.from && attrs.to){
                         vm.build1 = attrs.from;
                         vm.build2 = attrs.to;
@@ -95,6 +96,8 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
         }
         vm.progress = 0;
         $log.info('Loading builds '+vm.build1.replace(/ /g,'')+' & '+vm.build2.replace(/ /g,''));
+        $location.search('from', vm.build1.replace(/ /g,''));
+        $location.search('to', vm.build2.replace(/ /g,''));
         var build1, build2;
         $http.get(proxy+vm.solder+'/'+vm.build1.replace(/ /g,'')+'?include=mods').then(function (res) {
             vm.progress = 50;
@@ -119,7 +122,6 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
         vm.url = 'http://api.technicpack.net/modpack/the-1710-pack';
         vm.updateUrl();
     };
-
 
     function generate (b1, b2){
         $log.info('Generate changelog');
