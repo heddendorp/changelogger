@@ -131,15 +131,15 @@
             </md-card-title>
             <md-card-content>
                 <div layout-gt-sm="row">
-                    <md-input-container>
+                    <md-input-container class="md-accent">
                         <label>Addition symbol</label>
                         <input ng-model="vm.symbols.add">
                     </md-input-container>
-                    <md-input-container>
+                    <md-input-container class="md-accent">
                         <label>Update symbol</label>
                         <input ng-model="vm.symbols.update">
                     </md-input-container>
-                    <md-input-container>
+                    <md-input-container class="md-accent">
                         <label>Deletion symbol</label>
                         <input ng-model="vm.symbols.delete">
                     </md-input-container>
@@ -166,7 +166,7 @@
                 </div>
             </md-card-content>
             <md-card-actions layout="row" layout-align="end center">
-                <md-button data-clipboard-target="#data" class="md-raised md-accent" id="copy">Copy to clipboard
+                <md-button data-clipboard-target="#data" class="md-raised" id="copy">Copy to clipboard
                 </md-button>
             </md-card-actions>
         </md-card>
