@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
     <link rel="stylesheet" href="style/app.css">
     <link rel="stylesheet" href="style/animate.css">
+    <style>[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }</style>
 </head>
 
 <body layout="column" ng-controller="AppController as vm">
@@ -27,7 +30,7 @@
     </div>
 </md-toolbar>
 <md-progress-linear class="md-accent" md-mode="determinate" value="{{vm.progress}}"></md-progress-linear>
-<div layout="row" flex layout-align="center start">
+<div layout="row" flex layout-align="center start" ng-cloak>
     <div flex="25">
         <md-card md-whiteframe="6">
             <md-card-title>
