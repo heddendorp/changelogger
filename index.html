@@ -79,7 +79,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <div flex="100" flex-gt-md="30" layout="row" style="max-height: 80%;">
+    <div id="builds" flex="100" flex-gt-md="30" layout="row" style="max-height: 80%;">
         <md-card flex md-whiteframe="6" ng-if="vm.data && vm.url">
             <md-card-title style="padding-bottom: 55px;">
                 <md-card-title-text>
@@ -108,7 +108,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <div flex="100" flex-gt-md="30">
+    <div id="changes" flex="100" flex-gt-md="30">
         <md-card flex md-whiteframe="6" ng-if="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">
             <md-card-title>
                 <md-card-title-text>

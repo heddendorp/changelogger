@@ -10,7 +10,7 @@ app.config(function($mdThemingProvider, $mdIconProvider) {
         .iconSet('app', 'icons.svg');
 });
 
-app.controller('AppController', function($http, $mdToast, $log, $analytics, $location) {
+app.controller('AppController', function($http, $mdToast, $log, $analytics, $location, $anchorScroll, $timeout) {
     var vm = this;
     var request = false;
     var proxy = 'http://bochen415.info/loggify.php?url=';
@@ -54,6 +54,9 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
                     if(prod)
                         $analytics.eventTrack('loaded: '+res.data.name, {  category: 'Pack loaded', label: res.data.display_name });
                     $mdToast.showSimple('Pack data loaded');
+                    $timeout(function () {
+                        $anchorScroll('builds');
+                    }, 300);
                     $location.search('url', vm.url);
                     vm.changes={};
                     if(attrs.from && attrs.to){
@@ -111,6 +114,9 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
                 $log.info('Build 2 loaded, request is '+request);
                 $log.info(build2);
                 vm.changes = generate(build1, build2);
+                $timeout(function () {
+                    $anchorScroll('changes');
+                }, 300);
             });
         });
         if(prod)
