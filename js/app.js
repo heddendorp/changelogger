@@ -1,10 +1,13 @@
 new Clipboard('#copy');
 var app = angular.module('StarterApp', ['ngMaterial', 'angulartics', 'angulartics.google.analytics']);
 
-app.config(function($mdThemingProvider) {
+app.config(function($mdThemingProvider, $mdIconProvider) {
     $mdThemingProvider.theme('default')
         .primaryPalette('indigo')
-        .accentPalette('deep-orange');
+        .accentPalette('pink')
+        .dark();
+    $mdIconProvider
+        .iconSet('app', 'icons.svg');
 });
 
 app.controller('AppController', function($http, $mdToast, $log, $analytics, $location) {
@@ -13,6 +16,12 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
     var proxy = 'http://bochen415.info/loggify.php?url=';
     var attrs = $location.search();
     var prod = ($location.host() == 'isigiel.github.io');
+    vm.symbols={
+        add: '+',
+        update: '^',
+        delete: '-'
+    };
+
     vm.prod = prod;
     vm.build1 = '';
     vm.build2 = '';
