@@ -31,8 +31,8 @@
     </div>
 </md-toolbar>
 <md-progress-linear class="md-accent" md-mode="determinate" value="{{vm.progress}}"></md-progress-linear>
-<div layout="row" flex layout-align="center start" ng-cloak>
-    <div flex="25">
+<md-content layout="row" flex layout-align="center start" ng-cloak layout-wrap>
+    <div flex="100" flex-gt-md="25">
         <md-card md-whiteframe="6">
             <md-card-title>
                 <md-card-title-text>
@@ -79,7 +79,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <div flex="30" layout="row" style="max-height: 80%;">
+    <div flex="100" flex-gt-md="30" layout="row" style="max-height: 80%;">
         <md-card flex md-whiteframe="6" ng-if="vm.data && vm.url">
             <md-card-title style="padding-bottom: 55px;">
                 <md-card-title-text>
@@ -108,7 +108,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <div flex="30">
+    <div flex="100" flex-gt-md="30">
         <md-card flex md-whiteframe="6" ng-if="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">
             <md-card-title>
                 <md-card-title-text>
@@ -157,7 +157,7 @@
             </md-card-actions>
         </md-card>
     </div>
-</div>
+</md-content>
 <div layout="row" layout-padding>
     <span flex></span>
     <span>Version 0.3</span>
