@@ -40,15 +40,9 @@
                     <label>Api-URL</label>
                     <input type="text" ng-model="vm.url" ng-change="vm.updateUrl()">
                 </md-input-container>
-                <p class="md-title">The solder changelog generator</p>
-                <p class="md-body-1">
-                    This little tool helps you generating Changelogs for modpacks served by the solder api. Just follow
-                    the instructions and you will have yourself a nice changelog in no time.
-                    <br>
-                    In case of questions file an issue or find me on discord on the technic server (link above).
-                    <br>
-                    Cheers, @isigiel
-                </p>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="vm.startDemo()">Try with 1.7.10 pack</md-button>
+                </md-card-actions>
             </md-card-content>
         </md-card>
         <md-card md-whiteframe="3">
@@ -59,6 +53,23 @@
             </md-card-title>
             <md-card-content>
                 <p class="md-body-1 share">http://isigiel.github.io/changelogger/<span ng-if="vm.data && vm.url">#/?url={{vm.url}}<span ng-if="vm.changes.adds[0] || vm.changes.updates[0] || vm.changes.removes[0]">&from={{vm.build1}}&to={{vm.build2}}</span></span></p>
+            </md-card-content>
+        </md-card>
+        <md-card md-whiteframe="3">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">The solder changelog generator</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <p class="md-body-1">
+                    This little tool helps you generating Changelogs for modpacks served by the solder api. Just follow
+                    the instructions and you will have yourself a nice changelog in no time.
+                    <br>
+                    In case of questions file an issue or find me on discord on the technic server (link above).
+                    <br>
+                    Cheers, @isigiel
+                </p>
             </md-card-content>
         </md-card>
     </div>

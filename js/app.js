@@ -115,6 +115,11 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
         vm.updateUrl();
     }
 
+    vm.startDemo = function () {
+        vm.url = 'http://api.technicpack.net/modpack/the-1710-pack';
+        vm.updateUrl();
+    };
+
 
     function generate (b1, b2){
         $log.info('Generate changelog');
