@@ -55,6 +55,7 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
                         $analytics.eventTrack('loaded: '+res.data.name, {  category: 'Pack loaded', label: res.data.display_name });
                     $mdToast.showSimple('Pack data loaded');
                     $location.search('url', vm.url);
+                    vm.changes={};
                     if(attrs.from && attrs.to){
                         vm.build1 = attrs.from;
                         vm.build2 = attrs.to;
@@ -66,12 +67,14 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
                     if(prod)
                         $analytics.eventTrack(vm.url, {  category: 'Changelog error', label: 'Solder api problem' });
                     $mdToast.showSimple('Not able to load pack from solder');
+                    vm.changes={};
                 })
             } else {
                 vm.progress = 0;
                 if(prod)
                     $analytics.eventTrack(res.data.name, {  category: 'Changelog error', label: 'Non solder pack entered' });
                 $mdToast.showSimple('Pack isn\'t solder enabled');
+                vm.changes={};
             }
         }, function (err) {
             vm.progress = 0;
