@@ -13,7 +13,7 @@ app.config(function($mdThemingProvider, $mdIconProvider) {
 app.controller('AppController', function($http, $mdToast, $log, $analytics, $location, $anchorScroll, $timeout) {
     var vm = this;
     var request = false;
-    var proxy = 'http://bochen415.info/loggify.php?url=';
+    var proxy = 'http://owldreams.info/loggify.php?url=';
     var attrs = $location.search();
     var prod = ($location.host() == 'isigiel.github.io');
     vm.symbols={
