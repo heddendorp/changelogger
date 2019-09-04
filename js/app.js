@@ -37,7 +37,8 @@ app.controller('AppController', function($http, $mdToast, $log, $analytics, $loc
     };
     vm.updateUrl = function () {
         vm.progress = 0;
-        $http.get(proxy+vm.url+'?build=4.0-99').then(function (res) {
+        // eventually pull the build number from http://api.technicpack.net/launcher/version/stable4
+        $http.get(proxy+vm.url+'?build=467').then(function (res) {
             vm.progress = 50;
             $log.info('Platform api loaded');
             $log.info(res.data);
